@@ -1,16 +1,30 @@
 const express = require('express'); // importing a CommonJS module
+const helmet = require('helmet');
+
 
 const hubsRouter = require('./hubs/hubs-router.js');
 
 const server = express();
 
+// three Amigos
+function dateLogger(req, res, next){
+console.log(new Date().toISOString());
 
+  next();
+}
+
+function logger(req,res,next){
+console.log(`[${new Date().toISOString()}${req.method} to ${req.url}`);
+
+  next();
+}
 //Global Middleware
 server.use(helmet()); //third-party
 server.use(express.json()); /// Built-in
-
+server.use(dateLogger); //custom middleware
 
 server.use('/api/hubs', hubsRouter);
+
 
 server.get('/', (req, res) => {
   const nameInsert = (req.name) ? ` ${req.name}` : '';
