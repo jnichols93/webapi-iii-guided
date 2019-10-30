@@ -4,7 +4,11 @@ const hubsRouter = require('./hubs/hubs-router.js');
 
 const server = express();
 
-server.use(express.json());
+
+//Global Middleware
+server.use(helmet()); //third-party
+server.use(express.json()); /// Built-in
+
 
 server.use('/api/hubs', hubsRouter);
 
